@@ -9,11 +9,11 @@ L'entreprise dispose d'un serveur Linux qui doit être préparé pour accueillir
 
 Votre mission consiste à découvrir progressivement les principaux mécanismes d'administration d'un système Linux :
 
-- les utilisateurs ;
-- les groupes ;
-- les privilèges administrateur ;
-- les fichiers et dossiers ;
-- les permissions de sécurité.
+- les utilisateurs 
+- les groupes 
+- les privilèges administrateur 
+- les fichiers et dossiers 
+- les permissions de sécurité
 
 ---
 
@@ -92,9 +92,9 @@ affiche la date et l'heure du système.
 
 Cette information est importante pour :
 
-- les journaux système ;
-- les sauvegardes ;
-- les tâches planifiées.
+- les journaux système 
+- les sauvegardes 
+- les tâches planifiées
 
 ---
 
@@ -143,11 +143,11 @@ L'option :
 
 demande un affichage détaillé :
 
-- permissions ;
-- propriétaire ;
-- groupe ;
-- taille ;
-- date de modification.
+- permissions 
+- propriétaire 
+- groupe 
+- taille 
+- date de modification
 
 Vous découvrirez plus tard la signification de ces informations.
 
@@ -225,10 +225,10 @@ Linux est un système conçu dès l'origine pour fonctionner avec plusieurs util
 
 Chaque personne possède :
 
-- un identifiant ;
-- un mot de passe ;
-- un répertoire personnel ;
-- des permissions spécifiques.
+- un identifiant 
+- un mot de passe 
+- un répertoire personnel 
+- des permissions spécifiques
 
 Cette séparation des comptes permet de protéger les données et d'éviter qu'un utilisateur ne modifie les fichiers d'un autre.
 
@@ -335,10 +335,10 @@ Le compte root possède tous les droits.
 
 Il peut :
 
-- modifier n'importe quel fichier ;
-- installer des logiciels ;
-- supprimer des utilisateurs ;
-- arrêter le système.
+- modifier n'importe quel fichier 
+- installer des logiciels 
+- supprimer des utilisateurs 
+- arrêter le système
 
 Une erreur réalisée avec ce compte peut rendre le système inutilisable.
 
@@ -420,10 +420,10 @@ sudo adduser stagiaire
 
 Cette commande réalise automatiquement plusieurs actions :
 
-- création du compte ;
-- création du dossier personnel ;
-- création du groupe principal ;
-- définition du mot de passe.
+- création du compte 
+- création du dossier personnel 
+- création du groupe principal 
+- définition du mot de passe
 
 Vérifiez sa présence :
 
@@ -496,9 +496,9 @@ Les groupes permettent d'attribuer les mêmes droits à plusieurs utilisateurs.
 
 Exemple :
 
-- groupe informatique ;
-- groupe comptabilité ;
-- groupe direction.
+- groupe informatique 
+- groupe comptabilité 
+- groupe direction
 
 Ainsi, il n'est pas nécessaire de gérer les permissions utilisateur par utilisateur.
 
@@ -723,9 +723,9 @@ rw-
 
 signifie :
 
-- lecture autorisée ;
-- écriture autorisée ;
-- exécution interdite.
+- lecture autorisée 
+- écriture autorisée 
+- exécution interdite
 
 ---
 
@@ -799,8 +799,8 @@ Change Owner
 
 Elle permet de modifier :
 
-- le propriétaire ;
-- le groupe propriétaire.
+- le propriétaire 
+- le groupe propriétaire
 
 ---
 
@@ -808,9 +808,9 @@ Elle permet de modifier :
 
 L'objectif est de faire en sorte que :
 
-- le propriétaire puisse lire et modifier le fichier ;
-- les membres du groupe informatique puissent seulement lire ;
-- les autres utilisateurs ne puissent rien faire.
+- le propriétaire puisse lire et modifier le fichier 
+- les membres du groupe informatique puissent seulement lire 
+- les autres utilisateurs ne puissent rien faire
 
 Appliquer les droits nécessaires.
 
@@ -909,11 +909,11 @@ man usermod
 
 Au terme de ce TP, vous devez être capable :
 
-- d'identifier un utilisateur et son groupe ;
-- d'utiliser sudo en toute sécurité ;
-- de créer des comptes et des groupes ;
-- de manipuler des fichiers et dossiers ;
-- d'interpréter les permissions Linux ;
-- d'appliquer des droits d'accès adaptés à un besoin métier simple.
+- d'identifier un utilisateur et son groupe 
+- d'utiliser sudo en toute sécurité 
+- de créer des comptes et des groupes 
+- de manipuler des fichiers et dossiers 
+- d'interpréter les permissions Linux 
+- d'appliquer des droits d'accès adaptés à un besoin métier simple
 
 Ces compétences constituent la base de tout travail d'administration système Linux.
