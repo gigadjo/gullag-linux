@@ -1,0 +1,1682 @@
+
+# TP Linux – Mise à jour d'un système Ubuntu et découverte de Docker
+
+---
+
+# Présentation
+
+Dans de nombreuses entreprises, les serveurs Linux hébergent aujourd'hui :
+
+- des sites web ;
+- des applications métiers ;
+- des bases de données ;
+- des services réseaux.
+
+Un administrateur système doit être capable :
+
+- de maintenir son système à jour ;
+- d'installer de nouveaux logiciels ;
+- de déployer des applications rapidement ;
+- d'assurer la sécurité et la stabilité du serveur.
+
+Pour répondre à ces besoins, les administrateurs utilisent notamment :
+
+- **APT** pour gérer les logiciels ;
+- **Docker** pour déployer les applications ;
+- **Docker Compose** pour gérer plusieurs conteneurs simultanément.
+
+---
+
+# Mise en situation
+
+Vous venez d'intégrer l'équipe informatique.
+
+Un nouveau serveur Ubuntu a été installé dans le datacenter de l'entreprise.
+
+Votre mission consiste à :
+
+1. Vérifier l'état du système.
+2. Effectuer les mises à jour nécessaires.
+3. Installer plusieurs outils d'administration.
+4. Installer Docker.
+5. Déployer des applications sous forme de conteneurs.
+6. Automatiser le lancement d'une application avec Docker Compose.
+
+---
+
+# Objectifs pédagogiques
+
+À la fin de ce TP, vous devrez être capable de :
+
+✅ Expliquer le rôle des mises à jour système.
+
+✅ Utiliser APT pour rechercher, installer et supprimer des logiciels.
+
+✅ Comprendre le principe d'un dépôt logiciel.
+
+✅ Comprendre la différence entre une machine virtuelle et un conteneur.
+
+✅ Installer Docker.
+
+✅ Démarrer, surveiller et supprimer des conteneurs.
+
+✅ Créer un projet Docker Compose simple.
+
+---
+
+# Partie 1 : Découverte du serveur
+
+---
+
+# 1.1 Connexion au serveur
+
+Connectez-vous à la machine Ubuntu grâce à Putty.
+
+Exécutez les commandes suivantes :
+
+```bash
+whoami
+hostname
+pwd
+uname -a
+```
+
+---
+
+## Comprendre ce que l'on observe
+
+Avant toute intervention, un administrateur doit identifier :
+
+- sur quelle machine il travaille ;
+- avec quel compte utilisateur ;
+- quelle version du système est installée.
+
+Une erreur sur le mauvais serveur peut avoir des conséquences importantes.
+
+---
+
+### La commande `whoami`
+
+```bash
+whoami
+```
+
+Cette commande affiche l'identité de l'utilisateur connecté.
+
+Exemple :
+
+```text
+eleve
+```
+
+Sous Linux, chaque action est associée à un utilisateur.
+
+---
+
+### La commande `hostname`
+
+```bash
+hostname
+```
+
+Affiche le nom de la machine.
+
+Exemple :
+
+```text
+srv-web-01
+```
+
+Dans une entreprise, chaque serveur possède généralement un nom unique.
+
+---
+
+### La commande `pwd`
+
+```bash
+pwd
+```
+
+Signifie :
+
+```text
+Print Working Directory
+```
+
+Cette commande affiche le dossier dans lequel vous vous trouvez.
+
+---
+
+### La commande `uname -a`
+
+```bash
+uname -a
+```
+
+Affiche :
+
+- le noyau Linux utilisé ;
+- l'architecture ;
+- des informations système générales.
+
+Le noyau (kernel) constitue le cœur du système d'exploitation.
+
+---
+
+## Questions
+
+1. Quel est votre nom d'utilisateur ?
+2. Quel est le nom de la machine ?
+3. Quelle est l'architecture du système ?
+4. Quel noyau Linux est utilisé ?
+
+---
+
+# Partie 2 : Les mises à jour sous Ubuntu
+
+---
+
+# Pourquoi mettre à jour un système ?
+
+Imaginez qu'un logiciel comporte une faille de sécurité.
+
+Un attaquant pourrait exploiter cette faille pour accéder au serveur.
+
+Les mises à jour permettent notamment :
+
+- de corriger les bugs ;
+- de renforcer la sécurité ;
+- d'améliorer les performances ;
+- d'ajouter de nouvelles fonctionnalités.
+
+---
+
+## À retenir
+
+Un serveur non maintenu devient progressivement :
+
+- moins sécurisé ;
+- moins stable ;
+- plus difficile à administrer.
+
+---
+
+# 2.1 Comprendre les dépôts logiciels
+
+Linux fonctionne différemment de Windows.
+
+Sous Windows, les logiciels sont souvent téléchargés depuis les sites des éditeurs.
+
+Sous Ubuntu, les logiciels sont généralement téléchargés depuis des serveurs officiels appelés :
+
+```text
+Dépôts logiciels
+```
+
+Afficher les dépôts configurés :
+
+```bash
+grep -r "^deb" /etc/apt/
+```
+
+---
+
+## Comprendre ce qui se passe
+
+APT consulte ces dépôts pour :
+
+- rechercher des logiciels ;
+- télécharger leurs mises à jour ;
+- vérifier leur authenticité.
+
+Cette méthode permet de réduire le risque d'installer des logiciels modifiés ou malveillants.
+
+---
+
+## Questions
+
+1. Pourquoi est-il intéressant d'utiliser des dépôts officiels ?
+2. Quels avantages cela apporte-t-il à un administrateur ?
+
+---
+
+# 2.2 Mise à jour du catalogue
+
+Exécutez :
+
+```bash
+sudo apt update
+```
+
+---
+
+## Comprendre la commande
+
+Cette commande ne met PAS à jour les logiciels.
+
+Elle met simplement à jour la liste des logiciels disponibles.
+
+On peut comparer cela à l'actualisation du catalogue d'une bibliothèque.
+
+Vous ne récupérez pas encore les livres ; vous récupérez simplement la liste des ouvrages disponibles.
+
+---
+
+### Schéma simplifié
+
+```text
+apt update
+        ↓
+Télécharge les catalogues
+        ↓
+Compare les versions disponibles
+        ↓
+Signale les mises à jour possibles
+```
+
+---
+
+## Questions
+
+1. Combien de dépôts ont été consultés ?
+2. Le système indique-t-il des mises à jour disponibles ?
+
+---
+
+# 2.3 Afficher les mises à jour disponibles
+
+```bash
+apt list --upgradable
+```
+
+---
+
+## Explications
+
+Cette commande affiche tous les logiciels pouvant être mis à jour.
+
+Chaque ligne correspond à un paquet logiciel.
+
+---
+
+### Qu'est-ce qu'un paquet ?
+
+Un paquet est un ensemble de fichiers permettant d'installer un logiciel.
+
+Exemple :
+
+```text
+Firefox
+Apache
+Docker
+htop
+```
+
+sont distribués sous forme de paquets.
+
+---
+
+## Questions
+
+1. Combien de paquets peuvent être mis à jour ?
+2. Reconnaissez-vous certains logiciels ?
+
+---
+
+# 2.4 Installation des mises à jour
+
+```bash
+sudo apt upgrade -y
+```
+
+---
+
+## Comprendre le processus
+
+Cette commande :
+
+1. télécharge les nouvelles versions ;
+2. remplace les anciennes ;
+3. conserve les fichiers de configuration lorsque cela est possible.
+
+---
+
+## Pourquoi utiliser sudo ?
+
+Mettre à jour le système modifie des fichiers importants.
+
+Ces opérations nécessitent donc les privilèges administrateur.
+
+---
+
+## Vérification
+
+Relancez :
+
+```bash
+sudo apt update
+```
+
+---
+
+### Question
+
+Le système indique-t-il encore des mises à jour disponibles ?
+
+---
+
+# Partie 3 : Installation de logiciels avec APT (1 heure)
+
+---
+
+# 3.1 Recherche d'un logiciel
+
+Recherchez le logiciel :
+
+```text
+tree
+```
+
+à l'aide de :
+
+```bash
+apt search tree
+```
+
+---
+
+## Ce que fait APT
+
+APT dispose d'une immense base de données contenant des milliers de logiciels.
+
+Lorsqu'on utilise :
+
+```bash
+apt search
+```
+
+APT recherche dans cette base.
+
+---
+
+## Question
+
+Combien de résultats obtenez-vous ?
+
+---
+
+# 3.2 Installation de tree
+
+Installer :
+
+```bash
+sudo apt install tree -y
+```
+
+---
+
+## À quoi sert tree ?
+
+La commande :
+
+```bash
+tree
+```
+
+affiche l'arborescence d'un dossier.
+
+Exemple :
+
+```text
+projet
+├── documents
+├── images
+└── sauvegardes
+```
+
+Cette vue est souvent plus lisible que plusieurs commandes `ls`.
+
+---
+
+## Test
+
+```bash
+tree
+```
+
+---
+
+## Questions
+
+1. Que produit la commande ?
+2. Dans quels cas pourrait-elle être utile ?
+
+---
+
+# 3.3 Installation de htop
+
+Installer :
+
+```bash
+sudo apt install htop -y
+```
+
+Puis lancer :
+
+```bash
+htop
+```
+
+---
+
+## Comprendre htop
+
+htop est l'équivalent du gestionnaire des tâches sous Windows.
+
+Il permet de surveiller :
+
+- le processeur ;
+- la mémoire ;
+- les processus.
+
+Un administrateur l'utilise notamment lorsqu'un serveur devient lent.
+
+---
+
+## Observation
+
+Identifiez :
+
+- le pourcentage CPU utilisé ;
+- la mémoire consommée ;
+- le nombre de processus.
+
+---
+
+# 3.4 Suppression d'un logiciel
+
+Désinstaller :
+
+```bash
+sudo apt remove tree -y
+```
+
+---
+
+## Pourquoi supprimer un logiciel ?
+
+Un logiciel inutile :
+
+- occupe de l'espace disque ;
+- augmente parfois les risques de sécurité ;
+- complique la maintenance.
+
+---
+
+# Partie 4 : Découverte de Docker
+
+---
+
+# 4.1 Comprendre le principe de Docker
+
+Traditionnellement :
+
+```text
+Application
+      ↓
+Système Linux
+      ↓
+Matériel
+```
+
+---
+
+Avec Docker :
+
+```text
+Application
+      ↓
+Conteneur
+      ↓
+Docker
+      ↓
+Linux
+      ↓
+Matériel
+```
+
+---
+
+## Pourquoi utiliser Docker ?
+
+Avant Docker :
+
+- conflits de versions ;
+- installations longues ;
+- migrations compliquées.
+
+Avec Docker :
+
+- déploiement rapide ;
+- environnement identique partout ;
+- simplification de l'administration.
+
+---
+
+# Une analogie simple
+
+Imaginez un conteneur maritime.
+
+Peu importe ce qu'il contient :
+
+- ordinateur ;
+- vêtements ;
+- meubles ;
+
+le conteneur possède toujours le même format.
+
+Docker applique exactement cette idée.
+
+---
+
+# 4.2 Vérification de Docker
+
+Tester :
+
+```bash
+docker --version
+```
+
+---
+
+## Observation
+
+Si Docker n'est pas installé, la commande retournera une erreur.
+
+---
+
+# 4.3 Installation de Docker
+
+Installez Docker selon la procédure fournie : 
+
+# 1. Installation Docker CE (méthode officielle)
+
+## 1.1 Supprimer les paquets en conflit
+
+```
+sudo apt remove docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc
+```
+
+## 1.2 Installer les prérequis
+
+```sudo apt update
+sudo apt install -y ca-certificates curl
+```
+
+## 1.3 Ajouter la clé GPG
+
+```sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+
+## 1.4 Ajouter le dépôt
+
+```echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+## 1.5 Installer Docker
+
+```sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+## 1.6 Vérification
+
+```sudo systemctl status docker
+docker --version
+docker compose version
+```
+---
+
+Une fois terminé :
+
+```bash
+docker --version
+```
+
+Puis :
+
+```bash
+docker info
+```
+
+---
+
+## À retenir
+
+Le moteur Docker fonctionne comme un service permanent du système.
+
+C'est lui qui gère :
+
+- les images ;
+- les conteneurs ;
+- les réseaux Docker ;
+- les volumes.
+
+---
+
+# 4.4 Premier conteneur
+
+Exécuter :
+
+```bash
+sudo docker run hello-world
+```
+
+---
+
+## Ce qui se passe réellement
+
+Docker :
+
+1. cherche l'image localement ;
+2. la télécharge si elle n'existe pas ;
+3. crée un conteneur ;
+4. l'exécute ;
+5. affiche un message.
+
+---
+
+### Schéma
+
+```text
+docker run hello-world
+
+       ↓
+
+Recherche de l'image
+
+       ↓
+
+Téléchargement
+
+       ↓
+
+Création du conteneur
+
+       ↓
+
+Exécution
+```
+
+---
+
+# 4.5 Les images Docker
+
+Afficher :
+
+```bash
+docker images
+```
+
+---
+
+## Théorie
+
+Une image est un modèle.
+
+Elle contient :
+
+- l'application ;
+- ses bibliothèques ;
+- sa configuration.
+
+Une image n'est pas encore exécutée.
+
+---
+
+# 4.6 Télécharger Nginx
+
+```bash
+docker pull nginx
+```
+
+---
+
+## Qu'est-ce que Nginx ?
+
+Nginx est :
+
+- un serveur web ;
+- un reverse proxy ;
+- l'un des logiciels les plus utilisés sur Internet.
+
+---
+
+# 4.7 Créer un conteneur Nginx
+
+```bash
+docker run -d --name web nginx
+```
+
+---
+
+## Comprendre les options
+
+### -d
+
+```text
+Detached Mode
+```
+
+Le conteneur tourne en arrière-plan.
+
+---
+
+### --name
+
+Permet d'attribuer un nom plus simple au conteneur.
+
+---
+
+## Vérification
+
+```bash
+docker ps
+```
+
+---
+
+# 4.8 Consulter les journaux
+
+```bash
+docker logs web
+```
+
+---
+
+## Pourquoi les logs sont-ils importants ?
+
+Les journaux permettent de comprendre :
+
+- pourquoi un service démarre ;
+- pourquoi il échoue ;
+- quelles erreurs sont apparues.
+
+---
+
+# 4.9 Supprimer le conteneur
+
+```bash
+docker stop web
+docker rm web
+```
+
+---
+
+## Observation
+
+Vérifiez :
+
+```bash
+docker ps -a
+```
+
+---
+
+
+# Partie 5 : Déploiement d'une application complète avec Docker Compose
+
+## Contexte
+
+Jusqu'à présent, nous avons utilisé Docker pour lancer un seul conteneur :
+
+```text
+Docker
+  └── Nginx
+```
+
+Cependant, les applications modernes sont rarement constituées d'un seul service.
+
+Prenons l'exemple de WordPress.
+
+Pour fonctionner, WordPress a besoin :
+
+```text
+WordPress
+     │
+     └── Base de données MariaDB
+```
+
+Le serveur Web stocke :
+
+- les pages ;
+- les articles ;
+- les images.
+
+La base de données stocke :
+
+- les utilisateurs ;
+- les articles ;
+- la configuration ;
+- les commentaires.
+
+Ces deux services doivent communiquer en permanence.
+
+Gérer cela manuellement avec plusieurs commandes Docker deviendrait rapidement complexe.
+
+Docker Compose permet de décrire toute l'infrastructure sous forme d'un simple fichier texte.
+
+---
+
+# Comprendre l'architecture de l'application
+
+Avant de commencer, analysons ce que nous allons déployer.
+
+```text
++--------------------------+
+|        Navigateur        |
++------------+-------------+
+             |
+             | HTTP
+             |
+             v
++--------------------------+
+|        WordPress         |
+|        Port 8081         |
++------------+-------------+
+             |
+             | SQL
+             |
+             v
++--------------------------+
+|         MariaDB          |
++--------------------------+
+```
+
+---
+
+## Analyse fonctionnelle
+
+Le rôle de chaque composant :
+
+### MariaDB
+
+MariaDB est un système de gestion de base de données.
+
+Son rôle est de conserver durablement les données :
+
+- utilisateurs ;
+- mots de passe ;
+- articles ;
+- configuration du site.
+
+Sans MariaDB, WordPress ne peut pas fonctionner.
+
+---
+
+### WordPress
+
+WordPress est un système de gestion de contenu (CMS).
+
+Il permet :
+
+- de créer un site Web ;
+- publier des articles ;
+- gérer des comptes utilisateurs ;
+- administrer des contenus.
+
+---
+
+## Question
+
+Pourquoi est-il préférable de séparer WordPress et MariaDB dans deux conteneurs distincts ?
+
+---
+
+# Création du projet
+
+Créer un dossier dédié :
+
+```bash
+mkdir ~/wordpress-compose
+cd ~/wordpress-compose
+```
+
+---
+
+## Pourquoi créer un dossier spécifique ?
+
+Dans un environnement professionnel :
+
+chaque projet possède généralement son propre dossier contenant :
+
+```text
+wordpress-compose
+│
+├── compose.yaml
+├── sauvegardes
+├── logs
+└── documentation
+```
+
+Cette organisation facilite :
+
+- la maintenance ;
+- les sauvegardes ;
+- l'administration.
+
+---
+
+# Création du fichier compose.yaml
+
+Créer :
+
+```bash
+nano compose.yaml
+```
+
+Copiez le contenu suivant :
+
+```yaml
+services:
+  db:
+    image: mariadb:10.6.4-focal
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - wp_data:/var/www/html
+    ports:
+      - "8081:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+volumes:
+  db_data:
+  wp_data:
+```
+
+---
+
+# Analyse détaillée du fichier Compose
+
+Un administrateur système ne doit jamais exécuter une configuration qu'il ne comprend pas.
+
+Nous allons donc étudier chaque section.
+
+---
+
+# La section services
+
+```yaml
+services:
+```
+
+Cette instruction indique à Docker Compose :
+
+> Voici la liste des conteneurs composant l'application.
+
+Dans notre cas :
+
+```yaml
+db
+wordpress
+```
+
+Nous avons donc deux services.
+
+---
+
+# Service MariaDB
+
+## Définition du service
+
+```yaml
+db:
+```
+
+Ce service est nommé :
+
+```text
+db
+```
+
+Ce nom est très important.
+
+Les autres conteneurs pourront l'utiliser pour communiquer avec la base de données.
+
+---
+
+# Image utilisée
+
+```yaml
+image: mariadb:10.6.4-focal
+```
+
+Docker doit télécharger :
+
+```text
+MariaDB version 10.6.4
+```
+
+---
+
+## Pourquoi spécifier une version ?
+
+Mauvaise pratique :
+
+```yaml
+image: mariadb:latest
+```
+
+Bonne pratique :
+
+```yaml
+image: mariadb:10.6.4-focal
+```
+
+Cela garantit que tous les administrateurs utiliseront exactement la même version.
+
+---
+
+# Configuration de l'authentification
+
+```yaml
+command: --default-authentication-plugin=mysql_native_password
+```
+
+Cette option modifie le comportement de MariaDB au démarrage.
+
+Elle améliore la compatibilité avec certaines applications.
+
+---
+
+# Les volumes MariaDB
+
+```yaml
+volumes:
+  - db_data:/var/lib/mysql
+```
+
+C'est une partie extrêmement importante.
+
+---
+
+## Pourquoi un volume ?
+
+Sans volume :
+
+```text
+Conteneur supprimé
+        ↓
+Base supprimée
+        ↓
+Perte des données
+```
+
+Avec volume :
+
+```text
+Conteneur supprimé
+        ↓
+Volume conservé
+        ↓
+Données préservées
+```
+
+---
+
+## Schéma
+
+```text
++----------------------+
+|      Conteneur DB    |
++-----------+----------+
+            |
+            v
+
++----------------------+
+|      db_data         |
+| Articles             |
+| Comptes              |
+| Base SQL             |
++----------------------+
+```
+
+---
+
+## Question
+
+Pourquoi serait-il dangereux d'héberger une base de données sans volume ?
+
+---
+
+# Variables d'environnement
+
+```yaml
+environment:
+```
+
+Ces variables permettent de configurer automatiquement MariaDB.
+
+---
+
+## Mot de passe administrateur
+
+```yaml
+MYSQL_ROOT_PASSWORD: somewordpress
+```
+
+Définit le mot de passe du compte administrateur.
+
+---
+
+## Base de données
+
+```yaml
+MYSQL_DATABASE: wordpress
+```
+
+Crée automatiquement une base :
+
+```text
+wordpress
+```
+
+---
+
+## Utilisateur WordPress
+
+```yaml
+MYSQL_USER: wordpress
+MYSQL_PASSWORD: wordpress
+```
+
+Création automatique d'un compte destiné à WordPress.
+
+---
+
+## Réflexion sécurité
+
+Dans un environnement réel :
+
+```yaml
+MYSQL_PASSWORD: wordpress
+```
+
+serait une très mauvaise pratique.
+
+Pourquoi ?
+
+Parce que le mot de passe est extrêmement facile à deviner.
+
+---
+
+# Service WordPress
+
+## Définition
+
+```yaml
+wordpress:
+```
+
+Second conteneur du projet.
+
+---
+
+# Dépendance
+
+```yaml
+depends_on:
+  - db
+```
+
+Signification :
+
+```text
+WordPress dépend de MariaDB
+```
+
+Docker Compose démarrera MariaDB avant WordPress.
+
+---
+
+## Pourquoi ?
+
+WordPress doit pouvoir se connecter à la base de données dès son démarrage.
+
+---
+
+# Image WordPress
+
+```yaml
+image: wordpress:latest
+```
+
+Télécharge la dernière version disponible.
+
+---
+
+## Discussion
+
+Pourquoi utilise-t-on ici :
+
+```yaml
+latest
+```
+
+alors qu'on avait recommandé une version fixe pour MariaDB ?
+
+Quels risques cela peut-il entraîner ?
+
+---
+
+# Volume WordPress
+
+```yaml
+volumes:
+  - wp_data:/var/www/html
+```
+
+---
+
+## Que contient ce volume ?
+
+Il stocke :
+
+- thèmes ;
+- extensions ;
+- images ;
+- fichiers WordPress.
+
+---
+
+Schéma :
+
+```text
++----------------------+
+|      WordPress       |
++-----------+----------+
+            |
+            v
++----------------------+
+|       wp_data        |
+| Images               |
+| Thèmes               |
+| Plugins              |
++----------------------+
+```
+
+---
+
+# Publication du port
+
+```yaml
+ports:
+  - "8081:80"
+```
+
+---
+
+## Comprendre le routage des ports
+
+Dans le conteneur :
+
+```text
+Port 80
+```
+
+Sur le serveur :
+
+```text
+Port 8081
+```
+
+Traduction :
+
+```text
+Serveur:8081
+       ↓
+Conteneur:80
+```
+
+---
+
+## Pourquoi utiliser le port 8081 ?
+
+Parce que le port 80 pourrait déjà être utilisé par un autre service.
+
+---
+
+# Variables WordPress
+
+```yaml
+WORDPRESS_DB_HOST: db
+```
+
+Indique à WordPress :
+
+> La base de données se trouve sur le service nommé db.
+
+---
+
+## Comment cela fonctionne ?
+
+Docker Compose crée automatiquement un réseau privé.
+
+Chaque conteneur peut contacter les autres par leur nom.
+
+```text
+WordPress
+   |
+   | db
+   v
+MariaDB
+```
+
+---
+
+## Notion essentielle
+
+Les conteneurs ne communiquent pas via leurs adresses IP.
+
+Ils utilisent généralement les noms définis dans Docker Compose.
+
+---
+
+# Les volumes globaux
+
+Dernière section :
+
+```yaml
+volumes:
+  db_data:
+  wp_data:
+```
+
+---
+
+## Rôle
+
+Déclare officiellement les volumes utilisés par le projet.
+
+Docker les gérera automatiquement.
+
+---
+
+# Démarrage de l'application
+
+Lancer :
+
+```bash
+docker compose up -d
+```
+
+---
+
+## Que fait Docker Compose ?
+
+Étape 1 :
+
+```text
+Lecture du compose.yaml
+```
+
+Étape 2 :
+
+```text
+Téléchargement des images
+```
+
+Étape 3 :
+
+```text
+Création des volumes
+```
+
+Étape 4 :
+
+```text
+Création du réseau
+```
+
+Étape 5 :
+
+```text
+Création des conteneurs
+```
+
+Étape 6 :
+
+```text
+Démarrage des services
+```
+
+---
+
+# Observation de l'infrastructure créée
+
+Afficher :
+
+```bash
+docker ps
+```
+
+---
+
+Questions :
+
+1. Combien de conteneurs sont démarrés ?
+2. Quels sont leurs noms ?
+3. Quels ports sont exposés ?
+
+---
+
+# Analyse des volumes
+
+Afficher :
+
+```bash
+docker volume ls
+```
+
+---
+
+Questions :
+
+1. Combien de volumes ont été créés ?
+2. Pourquoi Docker les a-t-il générés ?
+
+---
+
+# Analyse du réseau
+
+Afficher :
+
+```bash
+docker network ls
+```
+
+Puis :
+
+```bash
+docker network inspect wordpress-compose_default
+```
+
+(adaptez le nom si nécessaire)
+
+---
+
+Questions :
+
+1. Combien de conteneurs sont présents sur ce réseau ?
+2. Pourquoi ont-ils besoin d'un réseau commun ?
+
+---
+
+# Analyse des journaux
+
+Observer WordPress :
+
+```bash
+docker logs <nom_du_conteneur>
+```
+
+Observer MariaDB :
+
+```bash
+docker logs <nom_du_conteneur>
+```
+
+---
+
+## Pourquoi consulter les logs ?
+
+Lorsqu'une application échoue :
+
+```text
+Les logs sont généralement le premier endroit où chercher.
+```
+
+Un administrateur passe une grande partie de son temps à analyser des journaux.
+
+---
+
+# Tests de persistance
+
+Créer un article dans WordPress.
+
+Ensuite :
+
+```bash
+docker compose down
+```
+
+Puis :
+
+```bash
+docker compose up -d
+```
+
+Reconnectez-vous au site.
+
+---
+
+## Question essentielle
+
+L'article est-il toujours présent ?
+
+---
+
+## Comprenez pourquoi
+
+En vous aidant du rôle des volumes étudié précédemment.
+
+---
+
+# Exercice d'analyse
+
+Complétez le tableau suivant :
+
+| Élément | Rôle |
+|----------|--------|
+| MariaDB | |
+| WordPress | |
+| Volume | |
+| Image | |
+| Conteneur | |
+| Réseau Docker | |
+| Docker Compose | |
+| Variable d'environnement | |
+
+---
+
+# Exercice de synthèse final
+
+Rédigez un compte-rendu expliquant :
+
+1. Le rôle d'APT.
+2. La différence entre `apt update` et `apt upgrade`.
+3. La différence entre une image et un conteneur.
+4. Le rôle des volumes Docker.
+5. Le rôle des réseaux Docker.
+6. Pourquoi WordPress et MariaDB sont séparés.
+7. L'intérêt de Docker Compose dans un environnement professionnel.
+
+
+---
+
+# Exercice de synthèse
+
+Vous êtes administrateur système chez TechServices.
+
+Votre mission :
+
+1. Vérifier les mises à jour disponibles.
+2. Mettre le système à jour.
+3. Installer htop.
+4. Installer Docker.
+5. Télécharger l'image nginx.
+6. Créer un conteneur nommé siteweb.
+7. Vérifier son fonctionnement.
+8. Consulter ses logs.
+9. Le supprimer.
+10. Déployer nginx avec Docker Compose.
+
+---
+
+# Auto-Compte-rendu à réfléchir / réaliser 
+
+## Partie 1 : Maintenance système
+
+- Différence entre `apt update` et `apt upgrade`.
+- Pourquoi les mises à jour sont-elles importantes ?
+
+## Partie 2 : Gestion des logiciels
+
+- Installation de `tree` ou `htop`.
+- Commandes utilisées.
+
+## Partie 3 : Docker
+
+- Définition d'une image.
+- Définition d'un conteneur.
+- Avantages de Docker.
+
+## Partie 4 : Docker Compose
+
+- Rôle du fichier `compose.yaml`.
+- Avantages de Docker Compose.
+
+---
+
+# À retenir
+
+À l'issue de ce TP, vous devez être capable :
+
+- d'utiliser APT pour administrer les logiciels ;
+- de maintenir un système Ubuntu à jour ;
+- de comprendre le principe des dépôts logiciels ;
+- d'expliquer ce qu'est un conteneur ;
+- de gérer des images Docker ;
+- de créer et supprimer des conteneurs ;
+- d'utiliser Docker Compose pour déployer une application.
+
+Ces compétences constituent aujourd'hui l'une des bases de l'administration des infrastructures Linux modernes.
