@@ -1,12 +1,6 @@
 
 # TP Linux – Découverte de l'administration Linux
 
-**Niveau : Bac**  
-**Durée : 6 heures**  
-**Environnement : Ubuntu Server (connexion via Putty)**
-
----
-
 # Présentation
 
 Vous venez d'être recruté comme technicien système dans une entreprise.
@@ -23,27 +17,7 @@ Votre mission consiste à découvrir progressivement les principaux mécanismes 
 
 ---
 
-# Objectifs pédagogiques
-
-À la fin de ce TP, vous serez capable de :
-
-✅ Identifier les principaux éléments d'un système Linux.
-
-✅ Comprendre le fonctionnement des comptes utilisateurs.
-
-✅ Utiliser les privilèges administrateur via sudo.
-
-✅ Créer et gérer des groupes.
-
-✅ Manipuler des fichiers et des dossiers.
-
-✅ Comprendre et configurer les permissions Linux.
-
-✅ Appliquer des règles de sécurité simples sur un système Linux.
-
----
-
-# Partie 1 : Découverte du système (30 min)
+# Partie 1 : Découverte du système 
 
 ---
 
@@ -237,7 +211,7 @@ signifie :
 
 ---
 
-# Partie 2 : Les utilisateurs Linux (1 h)
+# Partie 2 : Les utilisateurs Linux
 
 ---
 
@@ -428,7 +402,7 @@ C'est l'un des mécanismes de sécurité les plus utilisés sous Linux.
 
 ---
 
-# Partie 3 : Création et gestion des utilisateurs (1 h)
+# Partie 3 : Création et gestion des utilisateurs
 
 ---
 
@@ -508,7 +482,7 @@ grep temporaire /etc/passwd
 
 ---
 
-# Partie 4 : Les groupes Linux (1 h)
+# Partie 4 : Les groupes Linux
 
 ---
 
@@ -872,7 +846,7 @@ Pourquoi ces droits sont-ils adaptés à la situation proposée ?
 
 ---
 
-# Exercice de synthèse (30 min)
+# Exercice de synthèse
 
 Vous êtes administrateur système.
 
@@ -893,7 +867,7 @@ Contraintes :
 
 ---
 
-# Compte-rendu à rendre
+# Auto-Compte-rendu à réfléchir / produire : 
 
 ## Partie Utilisateurs
 
@@ -919,7 +893,7 @@ Contraintes :
 
 ---
 
-# Bonus (pour les plus rapides)
+# Bonus
 
 Utiliser :
 
