@@ -1,0 +1,945 @@
+
+# TP Linux – Découverte de l'administration Linux
+
+**Niveau : Bac**  
+**Durée : 6 heures**  
+**Environnement : Ubuntu Server (connexion via Putty)**
+
+---
+
+# Présentation
+
+Vous venez d'être recruté comme technicien système dans une entreprise.
+
+L'entreprise dispose d'un serveur Linux qui doit être préparé pour accueillir des utilisateurs et héberger des ressources de travail.
+
+Votre mission consiste à découvrir progressivement les principaux mécanismes d'administration d'un système Linux :
+
+- les utilisateurs ;
+- les groupes ;
+- les privilèges administrateur ;
+- les fichiers et dossiers ;
+- les permissions de sécurité.
+
+---
+
+# Objectifs pédagogiques
+
+À la fin de ce TP, vous serez capable de :
+
+✅ Identifier les principaux éléments d'un système Linux.
+
+✅ Comprendre le fonctionnement des comptes utilisateurs.
+
+✅ Utiliser les privilèges administrateur via sudo.
+
+✅ Créer et gérer des groupes.
+
+✅ Manipuler des fichiers et des dossiers.
+
+✅ Comprendre et configurer les permissions Linux.
+
+✅ Appliquer des règles de sécurité simples sur un système Linux.
+
+---
+
+# Partie 1 : Découverte du système (30 min)
+
+---
+
+# 1.1 Connexion au serveur
+
+Connectez-vous à votre machine Ubuntu à l'aide de Putty.
+
+Une fois connecté, exécutez les commandes suivantes :
+
+```bash
+whoami
+hostname
+pwd
+date
+```
+
+---
+
+## Explications
+
+### La commande `whoami`
+
+La commande :
+
+```bash
+whoami
+```
+
+affiche le nom de l'utilisateur actuellement connecté.
+
+Linux est un système multi-utilisateurs : plusieurs personnes peuvent posséder un compte sur la même machine.
+
+---
+
+### La commande `hostname`
+
+```bash
+hostname
+```
+
+affiche le nom du serveur.
+
+Dans un réseau, chaque machine possède généralement un nom qui permet de l'identifier facilement.
+
+---
+
+### La commande `pwd`
+
+```bash
+pwd
+```
+
+signifie :
+
+```text
+Print Working Directory
+```
+
+Elle affiche le dossier dans lequel vous vous trouvez actuellement.
+
+Sous Linux, toute navigation s'effectue dans une arborescence de dossiers.
+
+---
+
+### La commande `date`
+
+```bash
+date
+```
+
+affiche la date et l'heure du système.
+
+Cette information est importante pour :
+
+- les journaux système ;
+- les sauvegardes ;
+- les tâches planifiées.
+
+---
+
+## Questions
+
+1. Quel est votre nom d'utilisateur ?
+2. Quel est le nom de la machine ?
+3. Dans quel répertoire êtes-vous connecté ?
+4. Quelle est la date et l'heure du système ?
+
+---
+
+# 1.2 Découverte de quelques commandes utiles
+
+Exécutez :
+
+```bash
+ls
+```
+
+Puis :
+
+```bash
+ls -l
+```
+
+---
+
+## Explications
+
+### La commande `ls`
+
+Elle permet d'afficher le contenu d'un dossier.
+
+C'est l'équivalent de l'explorateur de fichiers sous Windows.
+
+---
+
+### L'option `-l`
+
+L'option :
+
+```bash
+-l
+```
+
+demande un affichage détaillé :
+
+- permissions ;
+- propriétaire ;
+- groupe ;
+- taille ;
+- date de modification.
+
+Vous découvrirez plus tard la signification de ces informations.
+
+---
+
+Essayez maintenant :
+
+```bash
+mkdir test
+cd test
+pwd
+cd ..
+```
+
+---
+
+## Explications
+
+### `mkdir`
+
+Signifie :
+
+```text
+Make Directory
+```
+
+Cette commande crée un dossier.
+
+---
+
+### `cd`
+
+Signifie :
+
+```text
+Change Directory
+```
+
+Elle permet de se déplacer dans l'arborescence du système.
+
+---
+
+### Le symbole `..`
+
+Sous Linux :
+
+```bash
+cd ..
+```
+
+signifie :
+
+> Remonter d'un niveau dans l'arborescence.
+
+---
+
+## Questions
+
+1. À quoi sert la commande `mkdir` ?
+2. À quoi sert la commande `cd` ?
+
+---
+
+# Partie 2 : Les utilisateurs Linux (1 h)
+
+---
+
+# 2.1 Comprendre les utilisateurs
+
+---
+
+## Théorie
+
+Linux est un système conçu dès l'origine pour fonctionner avec plusieurs utilisateurs.
+
+Chaque personne possède :
+
+- un identifiant ;
+- un mot de passe ;
+- un répertoire personnel ;
+- des permissions spécifiques.
+
+Cette séparation des comptes permet de protéger les données et d'éviter qu'un utilisateur ne modifie les fichiers d'un autre.
+
+---
+
+Afficher votre identité :
+
+```bash
+id
+```
+
+Exemple :
+
+```text
+uid=1000(eleve) gid=1000(eleve)
+```
+
+---
+
+## Explications
+
+### UID
+
+UID signifie :
+
+```text
+User Identifier
+```
+
+C'est le numéro unique de l'utilisateur.
+
+Le système utilise principalement ce numéro plutôt que le nom de l'utilisateur.
+
+---
+
+### GID
+
+GID signifie :
+
+```text
+Group Identifier
+```
+
+Chaque utilisateur appartient au minimum à un groupe principal.
+
+---
+
+# 2.2 Afficher les utilisateurs du système
+
+Consultez :
+
+```bash
+cat /etc/passwd
+```
+
+---
+
+## Explications
+
+Le fichier :
+
+```text
+/etc/passwd
+```
+
+contient la liste des comptes connus du système.
+
+Chaque ligne représente un utilisateur.
+
+Vous remarquerez la présence de comptes particuliers :
+
+```text
+daemon
+www-data
+nobody
+```
+
+Ces comptes sont utilisés par les services Linux.
+
+Ils ne correspondent pas nécessairement à de véritables personnes.
+
+---
+
+## Questions
+
+1. À quoi semble servir ce fichier ?
+2. Combien d'utilisateurs trouvez-vous sur la machine ?
+
+---
+
+# 2.3 Les privilèges administrateur
+
+---
+
+## Théorie
+
+Sous Linux existe un utilisateur spécial :
+
+```text
+root
+```
+
+Le compte root possède tous les droits.
+
+Il peut :
+
+- modifier n'importe quel fichier ;
+- installer des logiciels ;
+- supprimer des utilisateurs ;
+- arrêter le système.
+
+Une erreur réalisée avec ce compte peut rendre le système inutilisable.
+
+Pour cette raison, les administrateurs utilisent généralement la commande :
+
+```bash
+sudo
+```
+
+plutôt qu'une connexion permanente en root.
+
+---
+
+Afficher les informations du compte root :
+
+```bash
+grep root /etc/passwd
+```
+
+---
+
+# 2.4 Utilisation de sudo
+
+Essayez :
+
+```bash
+apt update
+```
+
+Que se passe-t-il ?
+
+Exécutez ensuite :
+
+```bash
+sudo apt update
+```
+
+---
+
+## Explications
+
+### Que signifie sudo ?
+
+```text
+sudo
+=
+Super User DO
+```
+
+Cette commande permet d'exécuter temporairement une action avec les privilèges d'administration.
+
+C'est l'un des mécanismes de sécurité les plus utilisés sous Linux.
+
+---
+
+## Questions
+
+1. Pourquoi la première commande échoue-t-elle ?
+2. Quel est le rôle de sudo ?
+3. Pourquoi est-il préférable d'utiliser sudo plutôt que le compte root ?
+
+---
+
+# Partie 3 : Création et gestion des utilisateurs (1 h)
+
+---
+
+# 3.1 Création d'un utilisateur
+
+Créer un utilisateur :
+
+```bash
+sudo adduser stagiaire
+```
+
+---
+
+## Explications
+
+Cette commande réalise automatiquement plusieurs actions :
+
+- création du compte ;
+- création du dossier personnel ;
+- création du groupe principal ;
+- définition du mot de passe.
+
+Vérifiez sa présence :
+
+```bash
+grep stagiaire /etc/passwd
+```
+
+---
+
+# 3.2 Informations sur l'utilisateur
+
+Afficher ses informations :
+
+```bash
+id stagiaire
+```
+
+---
+
+## Questions
+
+1. Quel UID a été attribué ?
+2. Quel est son groupe principal ?
+
+---
+
+# 3.3 Suppression d'un utilisateur
+
+Créer un utilisateur nommé :
+
+```text
+temporaire
+```
+
+Puis :
+
+```bash
+sudo userdel temporaire
+```
+
+---
+
+## Explications
+
+Les comptes inutilisés représentent un risque de sécurité.
+
+Un administrateur doit régulièrement supprimer les comptes qui ne sont plus utilisés.
+
+---
+
+Vérifier :
+
+```bash
+grep temporaire /etc/passwd
+```
+
+---
+
+# Partie 4 : Les groupes Linux (1 h)
+
+---
+
+# 4.1 Comprendre les groupes
+
+---
+
+## Théorie
+
+Les groupes permettent d'attribuer les mêmes droits à plusieurs utilisateurs.
+
+Exemple :
+
+- groupe informatique ;
+- groupe comptabilité ;
+- groupe direction.
+
+Ainsi, il n'est pas nécessaire de gérer les permissions utilisateur par utilisateur.
+
+Les groupes simplifient l'administration.
+
+---
+
+Afficher les groupes :
+
+```bash
+cat /etc/group
+```
+
+---
+
+# 4.2 Création de groupes
+
+Créer :
+
+```bash
+sudo groupadd informatique
+sudo groupadd comptabilite
+```
+
+---
+
+## Explications
+
+À ce stade, les groupes existent mais ne contiennent aucun membre.
+
+Ils agissent comme des "équipes" auxquelles on pourra rattacher des utilisateurs.
+
+---
+
+# 4.3 Ajouter un utilisateur dans un groupe
+
+```bash
+sudo usermod -aG informatique stagiaire
+```
+
+---
+
+## Explications
+
+Options utilisées :
+
+- `-a` : ajoute sans supprimer les autres groupes.
+- `-G` : modifie les groupes secondaires.
+
+Vérifier :
+
+```bash
+groups stagiaire
+```
+
+---
+
+## Questions
+
+1. Un utilisateur peut-il appartenir à plusieurs groupes ?
+2. Quel intérêt cela présente-t-il ?
+
+---
+
+# Partie 5 : Manipulation des dossiers et fichiers (1 h)
+
+---
+
+# 5.1 Création d'une arborescence
+
+Créer :
+
+```text
+entreprise
+├── informatique
+├── comptabilite
+└── direction
+```
+
+Commande :
+
+```bash
+mkdir -p entreprise/{informatique,comptabilite,direction}
+```
+
+---
+
+## Explications
+
+Les dossiers permettent d'organiser les informations.
+
+Comme sous Windows, il est recommandé de structurer les données par service ou par projet.
+
+L'option :
+
+```bash
+-p
+```
+
+permet de créer plusieurs niveaux de dossiers en une seule fois.
+
+---
+
+Visualiser :
+
+```bash
+tree entreprise
+```
+
+---
+
+# 5.2 Création de fichiers
+
+Créer :
+
+```bash
+touch entreprise/informatique/serveur.txt
+
+touch entreprise/comptabilite/budget.txt
+
+touch entreprise/direction/strategie.txt
+```
+
+---
+
+## Explications
+
+La commande :
+
+```bash
+touch
+```
+
+est souvent utilisée pour créer un fichier vide.
+
+Elle peut également servir à modifier la date de dernière modification d'un fichier.
+
+---
+
+# 5.3 Édition d'un fichier
+
+```bash
+nano entreprise/informatique/serveur.txt
+```
+
+---
+
+## Explications
+
+Nano est un éditeur de texte simple intégré à la plupart des distributions Linux.
+
+Il permet de modifier des fichiers de configuration directement depuis le terminal.
+
+---
+
+Afficher :
+
+```bash
+cat entreprise/informatique/serveur.txt
+```
+
+---
+
+## Questions
+
+1. Quelle commande crée un fichier vide ?
+2. Quelle commande affiche le contenu d'un fichier ?
+
+---
+
+# Partie 6 : Les permissions Linux (1 h 30)
+
+---
+
+# 6.1 Observer les droits
+
+Afficher :
+
+```bash
+ls -l entreprise/informatique
+```
+
+Exemple :
+
+```text
+-rw-r--r--
+```
+
+---
+
+## Comprendre cette ligne
+
+Découpage :
+
+```text
+- rw- r-- r--
+```
+
+Le système distingue :
+
+```text
+Propriétaire | Groupe | Autres utilisateurs
+```
+
+---
+
+# 6.2 Comprendre les droits
+
+| Lettre | Signification |
+|----------|----------|
+| r | Lecture |
+| w | Écriture |
+| x | Exécution |
+
+---
+
+## Exemple
+
+```text
+rw-
+```
+
+signifie :
+
+- lecture autorisée ;
+- écriture autorisée ;
+- exécution interdite.
+
+---
+
+# 6.3 Modifier les permissions
+
+```bash
+chmod 700 entreprise/informatique/serveur.txt
+```
+
+---
+
+## Explications
+
+La notation numérique repose sur :
+
+```text
+Lecture = 4
+Écriture = 2
+Exécution = 1
+```
+
+Ainsi :
+
+```text
+7 = 4 + 2 + 1
+```
+
+correspond à :
+
+```text
+rwx
+```
+
+---
+
+Observer :
+
+```bash
+ls -l entreprise/informatique
+```
+
+Puis :
+
+```bash
+chmod 744 entreprise/informatique/serveur.txt
+```
+
+---
+
+# 6.4 Changer propriétaire et groupe
+
+```bash
+sudo chown stagiaire:informatique entreprise/informatique/serveur.txt
+```
+
+---
+
+## Explications
+
+La commande :
+
+```bash
+chown
+```
+
+signifie :
+
+```text
+Change Owner
+```
+
+Elle permet de modifier :
+
+- le propriétaire ;
+- le groupe propriétaire.
+
+---
+
+# 6.5 Étude pratique
+
+L'objectif est de faire en sorte que :
+
+- le propriétaire puisse lire et modifier le fichier ;
+- les membres du groupe informatique puissent seulement lire ;
+- les autres utilisateurs ne puissent rien faire.
+
+Appliquer les droits nécessaires.
+
+---
+
+### Indice
+
+Déterminez les valeurs numériques correspondant à :
+
+```text
+rw-
+r--
+---
+```
+
+Puis combinez-les dans la commande chmod.
+
+---
+
+Vérifier :
+
+```bash
+ls -l entreprise/informatique/serveur.txt
+```
+
+---
+
+## Question
+
+Expliquez précisément la signification des droits obtenus.
+
+Pourquoi ces droits sont-ils adaptés à la situation proposée ?
+
+---
+
+# Exercice de synthèse (30 min)
+
+Vous êtes administrateur système.
+
+Créez :
+
+- un groupe nommé `support`
+- un utilisateur nommé `technicien`
+- un dossier nommé `maintenance`
+- un fichier nommé `interventions.txt`
+
+Contraintes :
+
+1. Le fichier doit appartenir à l'utilisateur `technicien`.
+2. Le groupe propriétaire doit être `support`.
+3. L'utilisateur doit pouvoir lire et modifier le fichier.
+4. Le groupe doit uniquement pouvoir lire.
+5. Les autres utilisateurs ne doivent avoir aucun accès.
+
+---
+
+# Compte-rendu à rendre
+
+## Partie Utilisateurs
+
+- Définition d'un utilisateur Linux.
+- Rôle du compte root.
+- Rôle de sudo.
+
+## Partie Groupes
+
+- Définition d'un groupe.
+- Intérêt des groupes dans une entreprise.
+
+## Partie Fichiers
+
+- Commandes utilisées.
+- Arborescence créée.
+
+## Partie Permissions
+
+- Explication des droits Linux.
+- Commandes utilisées.
+- Résultat de l'exercice de synthèse.
+
+---
+
+# Bonus (pour les plus rapides)
+
+Utiliser :
+
+```bash
+man chmod
+man chown
+man usermod
+```
+
+---
+
+## À retenir
+
+Au terme de ce TP, vous devez être capable :
+
+- d'identifier un utilisateur et son groupe ;
+- d'utiliser sudo en toute sécurité ;
+- de créer des comptes et des groupes ;
+- de manipuler des fichiers et dossiers ;
+- d'interpréter les permissions Linux ;
+- d'appliquer des droits d'accès adaptés à un besoin métier simple.
+
+Ces compétences constituent la base de tout travail d'administration système Linux.
