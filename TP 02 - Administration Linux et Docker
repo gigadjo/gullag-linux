@@ -44,26 +44,6 @@ Votre mission consiste à :
 
 ---
 
-# Objectifs pédagogiques
-
-À la fin de ce TP, vous devrez être capable de :
-
-✅ Expliquer le rôle des mises à jour système.
-
-✅ Utiliser APT pour rechercher, installer et supprimer des logiciels.
-
-✅ Comprendre le principe d'un dépôt logiciel.
-
-✅ Comprendre la différence entre une machine virtuelle et un conteneur.
-
-✅ Installer Docker.
-
-✅ Démarrer, surveiller et supprimer des conteneurs.
-
-✅ Créer un projet Docker Compose simple.
-
----
-
 # Partie 1 : Découverte du serveur
 
 ---
