@@ -7,22 +7,22 @@
 
 Dans de nombreuses entreprises, les serveurs Linux hébergent aujourd'hui :
 
-- des sites web ;
-- des applications métiers ;
-- des bases de données ;
+- des sites web 
+- des applications métiers 
+- des bases de données 
 - des services réseaux.
 
 Un administrateur système doit être capable :
 
-- de maintenir son système à jour ;
-- d'installer de nouveaux logiciels ;
-- de déployer des applications rapidement ;
+- de maintenir son système à jour 
+- d'installer de nouveaux logiciels 
+- de déployer des applications rapidement 
 - d'assurer la sécurité et la stabilité du serveur.
 
 Pour répondre à ces besoins, les administrateurs utilisent notamment :
 
-- **APT** pour gérer les logiciels ;
-- **Docker** pour déployer les applications ;
+- **APT** pour gérer les logiciels 
+- **Docker** pour déployer les applications 
 - **Docker Compose** pour gérer plusieurs conteneurs simultanément.
 
 ---
@@ -67,8 +67,8 @@ uname -a
 
 Avant toute intervention, un administrateur doit identifier :
 
-- sur quelle machine il travaille ;
-- avec quel compte utilisateur ;
+- sur quelle machine il travaille 
+- avec quel compte utilisateur 
 - quelle version du système est installée.
 
 Une erreur sur le mauvais serveur peut avoir des conséquences importantes.
@@ -135,8 +135,8 @@ uname -a
 
 Affiche :
 
-- le noyau Linux utilisé ;
-- l'architecture ;
+- le noyau Linux utilisé 
+- l'architecture 
 - des informations système générales.
 
 Le noyau (kernel) constitue le cœur du système d'exploitation.
@@ -164,9 +164,9 @@ Un attaquant pourrait exploiter cette faille pour accéder au serveur.
 
 Les mises à jour permettent notamment :
 
-- de corriger les bugs ;
-- de renforcer la sécurité ;
-- d'améliorer les performances ;
+- de corriger les bugs 
+- de renforcer la sécurité 
+- d'améliorer les performances 
 - d'ajouter de nouvelles fonctionnalités.
 
 ---
@@ -175,8 +175,8 @@ Les mises à jour permettent notamment :
 
 Un serveur non maintenu devient progressivement :
 
-- moins sécurisé ;
-- moins stable ;
+- moins sécurisé 
+- moins stable 
 - plus difficile à administrer.
 
 ---
@@ -315,9 +315,9 @@ sudo apt upgrade -y
 
 Cette commande :
 
-1. télécharge les nouvelles versions ;
-2. remplace les anciennes ;
-3. conserve les fichiers de configuration lorsque cela est possible.
+1. télécharge les nouvelles versions 
+2. remplace les anciennes 
+3. conserve les fichiers de configuration lorsque cela est possible
 
 ---
 
@@ -455,9 +455,9 @@ htop est l'équivalent du gestionnaire des tâches sous Windows.
 
 Il permet de surveiller :
 
-- le processeur ;
-- la mémoire ;
-- les processus.
+- le processeur 
+- la mémoire 
+- les processus
 
 Un administrateur l'utilise notamment lorsqu'un serveur devient lent.
 
@@ -467,9 +467,9 @@ Un administrateur l'utilise notamment lorsqu'un serveur devient lent.
 
 Identifiez :
 
-- le pourcentage CPU utilisé ;
-- la mémoire consommée ;
-- le nombre de processus.
+- le pourcentage CPU utilisé 
+- la mémoire consommée 
+- le nombre de processus
 
 ---
 
@@ -487,9 +487,9 @@ sudo apt remove tree -y
 
 Un logiciel inutile :
 
-- occupe de l'espace disque ;
-- augmente parfois les risques de sécurité ;
-- complique la maintenance.
+- occupe de l'espace disque 
+- augmente parfois les risques de sécurité 
+- complique la maintenance
 
 ---
 
@@ -531,15 +531,15 @@ Matériel
 
 Avant Docker :
 
-- conflits de versions ;
-- installations longues ;
-- migrations compliquées.
+- conflits de versions 
+- installations longues 
+- migrations compliquées
 
 Avec Docker :
 
-- déploiement rapide ;
-- environnement identique partout ;
-- simplification de l'administration.
+- déploiement rapide 
+- environnement identique partout 
+- simplification de l'administration
 
 ---
 
@@ -549,9 +549,9 @@ Imaginez un conteneur maritime.
 
 Peu importe ce qu'il contient :
 
-- ordinateur ;
-- vêtements ;
-- meubles ;
+- ordinateur 
+- vêtements 
+- meubles 
 
 le conteneur possède toujours le même format.
 
@@ -639,10 +639,10 @@ Le moteur Docker fonctionne comme un service permanent du système.
 
 C'est lui qui gère :
 
-- les images ;
-- les conteneurs ;
-- les réseaux Docker ;
-- les volumes.
+- les images 
+- les conteneurs 
+- les réseaux Docker 
+- les volumes
 
 ---
 
@@ -660,11 +660,11 @@ sudo docker run hello-world
 
 Docker :
 
-1. cherche l'image localement ;
-2. la télécharge si elle n'existe pas ;
-3. crée un conteneur ;
-4. l'exécute ;
-5. affiche un message.
+1. cherche l'image localement 
+2. la télécharge si elle n'existe pas 
+3. crée un conteneur 
+4. l'exécute 
+5. affiche un message
 
 ---
 
@@ -708,9 +708,9 @@ Une image est un modèle.
 
 Elle contient :
 
-- l'application ;
-- ses bibliothèques ;
-- sa configuration.
+- l'application 
+- ses bibliothèques 
+- sa configuration
 
 Une image n'est pas encore exécutée.
 
@@ -728,9 +728,9 @@ docker pull nginx
 
 Nginx est :
 
-- un serveur web ;
-- un reverse proxy ;
-- l'un des logiciels les plus utilisés sur Internet.
+- un serveur web 
+- un reverse proxy 
+- l'un des logiciels les plus utilisés sur Internet
 
 ---
 
@@ -780,9 +780,9 @@ docker logs web
 
 Les journaux permettent de comprendre :
 
-- pourquoi un service démarre ;
-- pourquoi il échoue ;
-- quelles erreurs sont apparues.
+- pourquoi un service démarre 
+- pourquoi il échoue 
+- quelles erreurs sont apparues
 
 ---
 
@@ -831,16 +831,16 @@ WordPress
 
 Le serveur Web stocke :
 
-- les pages ;
-- les articles ;
-- les images.
+- les pages 
+- les articles 
+- les images
 
 La base de données stocke :
 
-- les utilisateurs ;
-- les articles ;
-- la configuration ;
-- les commentaires.
+- les utilisateurs 
+- les articles 
+- la configuration 
+- les commentaires
 
 Ces deux services doivent communiquer en permanence.
 
@@ -887,10 +887,10 @@ MariaDB est un système de gestion de base de données.
 
 Son rôle est de conserver durablement les données :
 
-- utilisateurs ;
-- mots de passe ;
-- articles ;
-- configuration du site.
+- utilisateurs 
+- mots de passe 
+- articles 
+- configuration du site
 
 Sans MariaDB, WordPress ne peut pas fonctionner.
 
@@ -902,10 +902,10 @@ WordPress est un système de gestion de contenu (CMS).
 
 Il permet :
 
-- de créer un site Web ;
-- publier des articles ;
-- gérer des comptes utilisateurs ;
-- administrer des contenus.
+- de créer un site Web 
+- publier des articles 
+- gérer des comptes utilisateurs 
+- administrer des contenus
 
 ---
 
@@ -943,9 +943,9 @@ wordpress-compose
 
 Cette organisation facilite :
 
-- la maintenance ;
-- les sauvegardes ;
-- l'administration.
+- la maintenance
+- les sauvegardes 
+- l'administration
 
 ---
 
@@ -1281,10 +1281,10 @@ volumes:
 
 Il stocke :
 
-- thèmes ;
-- extensions ;
-- images ;
-- fichiers WordPress.
+- thèmes 
+- extensions 
+- images 
+- fichiers WordPress
 
 ---
 
